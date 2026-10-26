@@ -1,0 +1,293 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicines | CampusCare</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .inventory-summary {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .inventory-card {
+      flex: 1;
+      min-width: 150px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .inventory-card p {
+      margin: 0 0 8px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .inventory-card strong {
+      font-size: 24px;
+      color: #153052;
+    }
+
+    .stock-low {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .stock-good {
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    .form-grid label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-grid input,
+    .form-grid select {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .toolbar input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    @media (max-width: 600px) {
+      .toolbar {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <a class="brand" href="dashboard.html">
+        <span class="brand-mark">✚</span>
+        <span>
+          <b>CampusCare</b>
+          <small>College Medical Centre</small>
+        </span>
+      </a>
+
+      <p class="nav-heading">MAIN MENU</p>
+
+      <a class="nav-link" href="dashboard.html">▦ <span>Dashboard</span></a>
+      <a class="nav-link" href="students.html">♙ <span>Students</span></a>
+      <a class="nav-link" href="staff.html">⚕ <span>Medical Staff</span></a>
+      <a class="nav-link" href="appointments.html">▣ <span>Appointments</span></a>
+      <a class="nav-link" href="consultations.html">✚ <span>Consultations</span></a>
+      <a class="nav-link active" href="medicines.html">▤ <span>Medicines</span></a>
+      <a class="nav-link" href="prescriptions.html">▤ <span>Prescriptions</span></a>
+      <a class="nav-link" href="reports.html">▥ <span>Reports</span></a>
+
+      <div class="sidebar-tip">
+        <b>Medicine inventory</b>
+        <p>Check stock quantities and expiry dates.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">INVENTORY MANAGEMENT</span>
+          <h1>Medicines</h1>
+        </div>
+
+        <div class="user-chip">
+          <span class="avatar">A</span>
+          <span>
+            <b>Medical Staff</b>
+            <small>CampusCare</small>
+          </span>
+        </div>
+      </header>
+
+      <div id="notice" class="notice hidden"></div>
+
+      <section class="panel">
+
+        <div class="panel-title">
+          <div>
+            <h2>Medicine inventory</h2>
+            <p>Add, search, edit or delete medicine stock records.</p>
+          </div>
+
+          <button class="button primary" type="button" id="showMedicineForm">
+            ＋ Add medicine
+          </button>
+        </div>
+
+        <div class="inventory-summary">
+          <article class="inventory-card">
+            <p>Total medicine types</p>
+            <strong id="inventoryTotal">—</strong>
+          </article>
+
+          <article class="inventory-card">
+            <p>Low-stock medicines</p>
+            <strong id="inventoryLowStock">—</strong>
+          </article>
+
+          <article class="inventory-card">
+            <p>Out-of-stock medicines</p>
+            <strong id="inventoryOutOfStock">—</strong>
+          </article>
+        </div>
+
+        <form id="medicineForm" class="form-grid hidden">
+
+          <input type="hidden" name="medicine_id">
+
+          <label>
+            Medicine name *
+            <input
+              name="medicine_name"
+              type="text"
+              maxlength="150"
+              required
+              placeholder="Enter medicine name"
+            >
+          </label>
+
+          <label>
+            Category *
+            <input
+              name="category"
+              type="text"
+              maxlength="100"
+              required
+              placeholder="e.g. Tablet, Syrup, Ointment"
+            >
+          </label>
+
+          <label>
+            Stock quantity *
+            <input
+              name="stock_quantity"
+              type="number"
+              min="0"
+              step="1"
+              required
+              value="0"
+            >
+          </label>
+
+          <label>
+            Unit price (₹) *
+            <input
+              name="price"
+              type="number"
+              min="0"
+              step="0.01"
+              required
+              placeholder="0.00"
+            >
+          </label>
+
+          <label>
+            Expiry date *
+            <input
+              name="expiry_date"
+              type="date"
+              required
+            >
+          </label>
+
+          <div class="form-buttons">
+            <button class="button primary" type="submit" id="saveMedicineBtn">
+              Save medicine
+            </button>
+
+            <button
+              class="button secondary"
+              type="button"
+              id="cancelMedicineForm"
+            >
+              Cancel
+            </button>
+          </div>
+
+        </form>
+
+        <div class="toolbar">
+          <input
+            id="medicineSearch"
+            type="search"
+            placeholder="Search medicine name or category"
+          >
+
+          <button class="button secondary" type="button" id="searchMedicines">
+            Search
+          </button>
+
+          <button class="button secondary" type="button" id="refreshMedicines">
+            Refresh
+          </button>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Medicine</th>
+                <th>Category</th>
+                <th>Available stock</th>
+                <th>Unit price</th>
+                <th>Expiry date</th>
+                <th>Stock status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="medicinesTable">
+              <tr>
+                <td colspan="7" class="empty-cell">
+                  Loading medicines…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <p class="page-footnote">
+        Educational mini-project using fictional sample records.
+        Not for real patient care.
+      </p>
+
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/medicines.js"></script>
+</body>
+</html>
+```

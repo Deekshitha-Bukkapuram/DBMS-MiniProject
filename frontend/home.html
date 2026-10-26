@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Home | College Medical Management System</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #18233b;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .header,
+    .panel,
+    .tile {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 3px 14px #00000012;
+    }
+
+    .header {
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .header h1 {
+      margin-top: 0;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+      padding: 14px;
+      background: white;
+      border-radius: 12px;
+    }
+
+    .link,
+    button {
+      display: inline-block;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #2457d6;
+      color: white;
+      text-decoration: none;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .link:hover,
+    button:hover {
+      opacity: 0.88;
+    }
+
+    .link.secondary {
+      background: #eef4ff;
+      color: #2457d6;
+    }
+
+    .panel {
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(220px, 1fr)
+      );
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .tile {
+      padding: 22px;
+    }
+
+    .tile h3 {
+      margin-top: 0;
+    }
+
+    .muted {
+      color: #526078;
+    }
+
+    #status {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px;
+      }
+
+      .header,
+      .panel,
+      .tile {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="header">
+      <div>
+        <h1>College Medical Management System</h1>
+        <p>Home</p>
+        <p id="identity" class="muted">
+          Checking your session...
+        </p>
+      </div>
+
+      <button id="logoutBtn" type="button">
+        Logout
+      </button>
+    </header>
+
+    <nav class="nav" aria-label="Main navigation">
+      <a class="link" id="dashboardLink" href="/login.html">
+        My Dashboard
+      </a>
+
+      <a class="link secondary" href="/home.html">
+        Home
+      </a>
+    </nav>
+
+    <section class="panel">
+      <h2>Welcome</h2>
+
+      <p>
+        Welcome to the College Medical Management System.
+        Use this page to navigate to the features available
+        for your account.
+      </p>
+
+      <p id="status" class="muted" role="status">
+        Loading your account details...
+      </p>
+    </section>
+
+    <section class="tiles">
+
+      <article class="tile">
+        <h3>My Dashboard</h3>
+
+        <p>
+          Open your personal dashboard and view the features
+          available to your account.
+        </p>
+
+        <a
+          class="link"
+          id="dashboardTileLink"
+          href="/login.html"
+        >
+          Open Dashboard
+        </a>
+      </article>
+
+      <article class="tile">
+        <h3>Appointments</h3>
+
+        <p>
+          View or manage appointments available to your account.
+        </p>
+
+        <a
+          class="link secondary"
+          id="appointmentsLink"
+          href="/student-dashboard.html#appointmentsSection"
+        >
+          Open Appointments
+        </a>
+      </article>
+
+      <article class="tile">
+        <h3>Medical Records</h3>
+
+        <p>
+          View medical records available to your account.
+        </p>
+
+        <a
+          class="link secondary"
+          id="recordsLink"
+          href="/student-dashboard.html#consultationsSection"
+        >
+          Open Medical Records
+        </a>
+      </article>
+
+    </section>
+  </main>
+
+  <script>
+    async function loadHome() {
+      const status = document.getElementById("status");
+
+      try {
+        const response = await fetch("/api/auth/me", {
+          credentials: "same-origin"
+        });
+
+        if (response.status === 401) {
+          window.location.replace("/login.html");
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error("Unable to verify your login.");
+        }
+
+        const data = await response.json();
+        const user = data.user || data;
+
+        let dashboardUrl;
+
+        if (user.role === "student") {
+          dashboardUrl = "/student-dashboard.html";
+
+          document.getElementById("appointmentsLink").href =
+            "/student-dashboard.html#appointmentsSection";
+
+          document.getElementById("recordsLink").href =
+            "/student-dashboard.html#consultationsSection";
+
+        } else if (
+          ["doctor", "nurse"].includes(user.role)
+        ) {
+          dashboardUrl = "/staff-dashboard.html";
+
+          document.getElementById("appointmentsLink").href =
+            "/appointments.html";
+
+          document.getElementById("recordsLink").href =
+            "/consultations.html";
+
+          document.getElementById("appointmentsLink").textContent =
+            "Manage Appointments";
+
+          document.getElementById("recordsLink").textContent =
+            "Manage Consultations";
+
+        } else {
+          window.location.replace("/login.html");
+          return;
+        }
+
+        document.getElementById("identity").textContent =
+          "Signed in as " +
+          (user.username || user.email || user.role);
+
+        document.getElementById("dashboardLink").href =
+          dashboardUrl;
+
+        document.getElementById("dashboardTileLink").href =
+          dashboardUrl;
+
+        status.textContent =
+          "You are signed in. Choose a section above to continue.";
+
+      } catch (error) {
+        status.textContent =
+          "Unable to load your account. Please log in again.";
+      }
+    }
+
+    document.getElementById("logoutBtn").addEventListener(
+      "click",
+      async () => {
+        const button = document.getElementById("logoutBtn");
+        button.disabled = true;
+
+        try {
+          await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin"
+          });
+        } finally {
+          window.location.replace("/login.html");
+        }
+      }
+    );
+
+    loadHome();
+  </script>
+</body>
+</html>

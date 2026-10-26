@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports | CampusCare</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html">
+          <span class="brand-mark">✚</span>
+          <span>
+            <b>CampusCare</b>
+            <small>College Medical Centre</small>
+          </span>
+        </a>
+
+        <p class="nav-heading">MAIN MENU</p>
+
+        <a class="nav-link" href="dashboard.html">
+          ▦ <span>Dashboard</span>
+        </a>
+
+        <a class="nav-link" href="students.html">
+          ♙ <span>Students</span>
+        </a>
+
+        <a class="nav-link" href="staff.html">
+          ⚕ <span>Medical Staff</span>
+        </a>
+
+        <a class="nav-link" href="appointments.html">
+          ▣ <span>Appointments</span>
+        </a>
+
+        <a class="nav-link" href="consultations.html">
+          ✚ <span>Consultations</span>
+        </a>
+
+        <a class="nav-link" href="medicines.html">
+          ▤ <span>Medicines</span>
+        </a>
+
+        <a class="nav-link" href="prescriptions.html">
+          💊 <span>Prescriptions</span>
+        </a>
+
+        <a class="nav-link active" href="reports.html">
+          ▥ <span>Reports</span>
+        </a>
+
+        <div class="sidebar-tip">
+          <b>Reports</b>
+          <p>
+            View appointment summaries and medicine inventory
+            retrieved from the database.
+          </p>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">DATABASE INSIGHTS</span>
+            <h1>Reports</h1>
+          </div>
+
+          <div class="user-chip">
+            <span class="avatar">A</span>
+            <span>
+              <b>Administrator</b>
+              <small>Medical office</small>
+            </span>
+          </div>
+        </header>
+
+        <div id="notice" class="notice hidden"></div>
+
+        <!-- Appointments by medical staff -->
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Appointments by medical staff</h2>
+              <p>Total appointments assigned to each staff member.</p>
+            </div>
+
+            <button
+              class="button secondary"
+              id="refreshReport"
+              type="button"
+            >
+              Refresh reports
+            </button>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Medical staff</th>
+                  <th>Total appointments</th>
+                </tr>
+              </thead>
+
+              <tbody id="reportTable">
+                <tr>
+                  <td colspan="2" class="empty-cell">
+                    Loading appointment report...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Medicine inventory -->
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Medicine inventory report</h2>
+              <p>
+                Current stock quantities, prices, and expiry dates.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Medicine name</th>
+                  <th>Category</th>
+                  <th>Stock quantity</th>
+                  <th>Price</th>
+                  <th>Expiry date</th>
+                </tr>
+              </thead>
+
+              <tbody id="medicineStockTable">
+                <tr>
+                  <td colspan="5" class="empty-cell">
+                    Loading medicine inventory...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <p class="page-footnote">
+          Report values are retrieved from your MySQL database through
+          the Express API.
+        </p>
+      </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/reports.js"></script>
+  </body>
+</html>

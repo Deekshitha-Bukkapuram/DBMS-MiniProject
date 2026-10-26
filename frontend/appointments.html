@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appointments | CampusCare</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-mark">✚</span
+          ><span
+            ><b>CampusCare</b><small>College Medical Centre</small></span
+          ></a
+        >
+        <p class="nav-heading">MAIN MENU</p>
+        <a class="nav-link" href="dashboard.html">▦ <span>Dashboard</span></a
+        ><a class="nav-link" href="students.html">♙ <span>Students</span></a
+        ><a class="nav-link" href="staff.html">⚕ <span>Medical Staff</span></a
+        ><a class="nav-link active" href="appointments.html"
+          >▣ <span>Appointments</span></a
+        ><a class="nav-link" href="consultations.html"
+          >✚ <span>Consultations</span></a
+        ><a class="nav-link" href="medicines.html">▤ <span>Medicines</span></a
+        ><a class="nav-link" href="reports.html">▥ <span>Reports</span></a>
+        <div class="sidebar-tip">
+          <b>Appointments</b>
+          <p>Schedule and track medical visits.</p>
+        </div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">VISIT SCHEDULING</span>
+            <h1>Appointments</h1>
+          </div>
+          <div class="user-chip">
+            <span class="avatar">A</span
+            ><span><b>Administrator</b><small>Medical office</small></span>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Appointment records</h2>
+              <p>Book, update, search or cancel appointments.</p>
+            </div>
+            <button class="button primary" id="showAppointmentForm">
+              ＋ Book appointment
+            </button>
+          </div>
+          <form id="appointmentForm" class="form-grid hidden">
+            <input type="hidden" name="appointment_id" /><label
+              >Student *<select name="student_id" id="studentSelect" required>
+                <option value="">Loading students…</option>
+              </select></label
+            ><label
+              >Medical staff *<select name="staff_id" id="staffSelect" required>
+                <option value="">Loading staff…</option>
+              </select></label
+            ><label
+              >Date *<input
+                type="date"
+                name="appointment_date"
+                required /></label
+            ><label
+              >Time *<input
+                type="time"
+                name="appointment_time"
+                required /></label
+            ><label
+              >Reason *<input name="reason" required maxlength="255" /></label
+            >
+            <label>
+  Status
+  <select name="status">
+    <option value="Scheduled">Scheduled</option>
+    <option value="Completed">Completed</option>
+    <option value="Cancelled">Cancelled</option>
+  </select>
+</label>
+            <div class="form-buttons">
+              <button class="button primary" type="submit">
+                Save appointment</button
+              ><button
+                class="button secondary"
+                type="button"
+                id="cancelAppointmentForm"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          <div class="toolbar">
+            <input
+              id="appointmentSearch"
+              placeholder="Search student, roll number, staff or status"
+            /><button class="button secondary" id="searchAppointments">
+              Search
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Medical staff</th>
+                  <th>Date / time</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsTable">
+                <tr>
+                  <td colspan="6" class="empty-cell">Loading appointments…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/appointments.js"></script>
+  </body>
+</html>

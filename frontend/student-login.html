@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login | College Medical Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: #f5f7fb;
+    }
+
+    .auth-container {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-banner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 55px;
+      background: linear-gradient(135deg, #173e91, #367cff);
+      color: white;
+    }
+
+    .auth-banner h1 {
+      font: 800 clamp(28px, 3vw, 42px) Manrope, sans-serif;
+      line-height: 1.25;
+      margin: 16px 0;
+    }
+
+    .auth-banner p {
+      max-width: 420px;
+      color: #e0eaff;
+    }
+
+    .auth-icon {
+      font-size: 65px;
+    }
+
+    .auth-form-area {
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 32px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 15px 45px rgba(19, 37, 66, .07);
+    }
+
+    .auth-card h2 {
+      margin: 8px 0;
+      font: 800 26px Manrope, sans-serif;
+    }
+
+    .auth-description {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .auth-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 17px;
+    }
+
+    .auth-field label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .auth-field input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dce3ee;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .auth-field input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px #e8efff;
+    }
+
+    .auth-submit {
+      width: 100%;
+      margin-top: 5px;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: white;
+      font-weight: 700;
+    }
+
+    .auth-submit:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .auth-message {
+      display: none;
+      margin: 15px 0;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .auth-message.error {
+      display: block;
+      background: #fff0f0;
+      color: #a52828;
+    }
+
+    .auth-message.success {
+      display: block;
+      background: #e7f8ef;
+      color: #166b49;
+    }
+
+    .auth-links {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .auth-links a {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .security-note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 750px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-banner {
+        padding: 28px;
+      }
+
+      .auth-banner h1 {
+        font-size: 28px;
+      }
+
+      .auth-icon {
+        font-size: 40px;
+      }
+
+      .auth-form-area {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="auth-container">
+    <section class="auth-banner">
+      <div class="auth-icon">🎓</div>
+      <div class="eyebrow light">STUDENT HEALTH SERVICES</div>
+      <h1>Your health.<br>Your campus.<br>Your care.</h1>
+      <p>
+        Access your college medical portal to view your personal
+        medical information and appointments.
+      </p>
+    </section>
+
+    <section class="auth-form-area">
+      <div class="auth-card">
+        <div class="eyebrow">STUDENT PORTAL</div>
+        <h2>Welcome back</h2>
+        <p class="auth-description">
+          Sign in using your official college email address.
+        </p>
+
+        <form id="studentLoginForm">
+          <div class="auth-field">
+            <label for="email">Official college email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="241148@iiitt.ac.in"
+              pattern="[0-9]+@iiitt\.ac\.in"
+              title="Enter your official college email address"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="auth-field">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <div
+            id="loginMessage"
+            class="auth-message"
+            role="alert"
+            aria-live="polite"
+          ></div>
+
+          <button type="submit" class="auth-submit" id="loginButton">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-links">
+          Medical staff?
+          <a href="/staff-login.html">Staff login</a>
+          <p><a href="/login.html">Back to portal selection</a></p>
+        </div>
+
+        <p class="security-note">
+          Authorized college accounts only. Your medical information
+          is restricted to permitted users.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById("studentLoginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const loginButton = document.getElementById("loginButton");
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      loginMessage.className = "auth-message";
+      loginMessage.textContent = "";
+
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
+
+      if (!/^[0-9]+@iiitt\.ac\.in$/.test(email)) {
+        loginMessage.className = "auth-message error";
+        loginMessage.textContent =
+          "Please enter your official college email, such as 241148@iiitt.ac.in.";
+        return;
+      }
+
+      loginButton.disabled = true;
+      loginButton.textContent = "Signing in...";
+
+      try {
+        const response = await fetch("/api/auth/student-login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "same-origin",
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Login failed.");
+        }
+
+        if (result.role !== "student") {
+          throw new Error("This account is not authorized for student login.");
+        }
+
+        loginMessage.className = "auth-message success";
+        loginMessage.textContent = "Login successful. Redirecting...";
+
+        window.location.replace(result.redirect);
+      } catch (error) {
+        loginMessage.className = "auth-message error";
+        loginMessage.textContent =
+          error.message || "Unable to connect to the server.";
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Sign In";
+      }
+    });
+  </script>
+</body>
+</html>

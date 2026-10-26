@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Staff Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .login-card {
+      width: min(400px, 90%);
+      background: white;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 5px 24px #00000012;
+      box-sizing: border-box;
+    }
+    label { display: block; margin-top: 16px; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      box-sizing: border-box;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 22px;
+      border: none;
+      border-radius: 7px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+    #message { margin-top: 15px; }
+    .back { display: block; margin-top: 18px; text-align: center; }
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <h1>Medical Staff Login</h1>
+    <p>Sign in using your assigned staff credentials.</p>
+
+    <form id="loginForm">
+      <label for="username">Staff Username</label>
+      <input id="username" name="username" autocomplete="username" required>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password"
+             autocomplete="current-password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p id="message" role="status"></p>
+    <a class="back" href="/login.html">Back to login portals</a>
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.textContent = "Checking credentials...";
+
+      try {
+        const response = await fetch("/api/auth/staff-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            username: form.username.value.trim(),
+            password: form.password.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || "Login failed. Check your credentials.");
+        }
+
+        if (data.role !== "doctor" && data.role !== "nurse") {
+          throw new Error("This account is not authorized for staff access.");
+        }
+
+        window.location.href = data.redirect || "/staff-dashboard.html";
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

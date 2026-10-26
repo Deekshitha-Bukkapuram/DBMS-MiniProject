@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Staff | CampusCare</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-mark">✚</span
+          ><span
+            ><b>CampusCare</b><small>College Medical Centre</small></span
+          ></a
+        >
+        <p class="nav-heading">MAIN MENU</p>
+        <a class="nav-link" href="dashboard.html">▦ <span>Dashboard</span></a
+        ><a class="nav-link" href="students.html">♙ <span>Students</span></a
+        ><a class="nav-link active" href="staff.html"
+          >⚕ <span>Medical Staff</span></a
+        ><a class="nav-link" href="appointments.html"
+          >▣ <span>Appointments</span></a
+        ><a class="nav-link" href="consultations.html"
+          >✚ <span>Consultations</span></a
+        ><a class="nav-link" href="medicines.html">▤ <span>Medicines</span></a
+        ><a class="nav-link" href="reports.html">▥ <span>Reports</span></a>
+        <div class="sidebar-tip">
+          <b>Clinic team</b>
+          <p>Keep medical staff information up to date.</p>
+        </div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">RECORD MANAGEMENT</span>
+            <h1>Medical Staff</h1>
+          </div>
+          <div class="user-chip">
+            <span class="avatar">A</span
+            ><span><b>Administrator</b><small>Medical office</small></span>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Medical staff records</h2>
+              <p>Manage doctors, nurses and medical assistants.</p>
+            </div>
+            <button class="button primary" id="showStaffForm">
+              ＋ Add staff
+            </button>
+          </div>
+          <form id="staffForm" class="form-grid hidden">
+            <input type="hidden" name="staff_id" /><label
+              >Staff name *<input name="staff_name" required /></label
+            ><label
+              >Role *<select name="role" required>
+                <option value="Doctor">Doctor</option>
+                <option value="Nurse">Nurse</option>
+                <option value="Medical Assistant">Medical Assistant</option>
+              </select></label
+            ><label>Specialization<input name="specialization" /></label
+            ><label
+              >Phone<input name="phone" pattern="[0-9+() -]{7,20}"
+            /></label>
+            <div class="form-buttons">
+              <button class="button primary" type="submit">Save staff</button
+              ><button
+                class="button secondary"
+                type="button"
+                id="cancelStaffForm"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          <div class="toolbar">
+            <input
+              id="staffSearch"
+              placeholder="Search name, role or specialization"
+            /><button class="button secondary" id="searchStaff">Search</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Specialization</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="staffTable">
+                <tr>
+                  <td colspan="5" class="empty-cell">Loading staff…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/staff.js"></script>
+  </body>
+</html>

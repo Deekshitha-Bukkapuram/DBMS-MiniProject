@@ -1,0 +1,210 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescriptions | CampusCare</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="staff-dashboard.html">
+        <span class="brand-mark">✚</span>
+        <span>
+          <b>CampusCare</b>
+          <small>College Medical Centre</small>
+        </span>
+      </a>
+
+      <p class="nav-heading">MAIN MENU</p>
+
+      <a class="nav-link" href="staff-dashboard.html">
+        ▦ <span>Dashboard</span>
+      </a>
+      <a class="nav-link" href="students.html">
+        ♙ <span>Students</span>
+      </a>
+      <a class="nav-link" href="staff.html">
+        ⚕ <span>Medical Staff</span>
+      </a>
+      <a class="nav-link" href="appointments.html">
+        ▣ <span>Appointments</span>
+      </a>
+      <a class="nav-link" href="consultations.html">
+        ✚ <span>Consultations</span>
+      </a>
+      <a class="nav-link active" href="prescriptions.html">
+        ▤ <span>Prescriptions</span>
+      </a>
+      <a class="nav-link" href="medicines.html">
+        ▥ <span>Medicines</span>
+      </a>
+      <a class="nav-link" href="reports.html">
+        ▧ <span>Reports</span>
+      </a>
+
+      <div class="sidebar-tip">
+        <b>Prescriptions</b>
+        <p>Connect prescribed medicines to student consultations.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">MEDICAL RECORDS</span>
+          <h1>Prescriptions</h1>
+        </div>
+
+        <div class="user-chip">
+          <span class="avatar">C</span>
+          <span>
+            <b id="staffName">Medical Staff</b>
+            <small id="staffRole">Staff portal</small>
+          </span>
+        </div>
+      </header>
+
+      <div id="notice" class="notice hidden"></div>
+
+      <section class="panel" id="prescriptionFormPanel">
+        <div class="panel-title">
+          <div>
+            <h2>Create a prescription</h2>
+            <p>Select the consultation and record the prescribed medicine.</p>
+          </div>
+        </div>
+
+        <form id="prescriptionForm" class="form-grid">
+          <label class="full-width">
+            Consultation *
+            <select
+              id="consultationSelect"
+              name="consultation_id"
+              required
+            >
+              <option value="">Loading consultations…</option>
+            </select>
+          </label>
+
+          <label>
+            Medicine *
+            <select id="medicineSelect" name="medicine_id" required>
+              <option value="">Loading medicines…</option>
+            </select>
+          </label>
+
+          <label>
+            Quantity *
+            <input
+              name="quantity"
+              type="number"
+              min="1"
+              step="1"
+              required
+            >
+          </label>
+
+          <label>
+            Dosage
+            <input
+              name="dosage"
+              maxlength="100"
+              placeholder="e.g. as prescribed"
+            >
+          </label>
+
+          <label>
+            Frequency
+            <input
+              name="frequency"
+              maxlength="100"
+              placeholder="Enter prescribed frequency"
+            >
+          </label>
+
+          <label>
+            Duration
+            <input
+              name="duration"
+              maxlength="100"
+              placeholder="Enter prescribed duration"
+            >
+          </label>
+
+          <label class="full-width">
+            Instructions
+            <textarea
+              name="instructions"
+              rows="3"
+              placeholder="Additional instructions"
+            ></textarea>
+          </label>
+
+          <div class="form-buttons">
+            <button class="button primary" type="submit">
+              Save prescription
+            </button>
+            <button class="button secondary" type="reset">
+              Clear form
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">
+          <div>
+            <h2>Prescription records</h2>
+            <p>Prescribed quantities and dispensing progress.</p>
+          </div>
+
+          <button
+            class="button secondary"
+            id="refreshPrescriptions"
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="prescriptionSearch"
+            placeholder="Search student, consultation or medicine"
+          >
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Student / Consultation</th>
+                <th>Medicine</th>
+                <th>Dosage and schedule</th>
+                <th>Prescribed</th>
+                <th>Dispensed</th>
+                <th>Remaining</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="prescriptionsTable">
+              <tr>
+                <td colspan="7" class="empty-cell">
+                  Loading prescriptions…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/prescriptions.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students | CampusCare</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-mark">✚</span
+          ><span
+            ><b>CampusCare</b><small>College Medical Centre</small></span
+          ></a
+        >
+        <p class="nav-heading">MAIN MENU</p>
+        <a class="nav-link" href="dashboard.html">▦ <span>Dashboard</span></a
+        ><a class="nav-link active" href="students.html"
+          >♙ <span>Students</span></a
+        ><a class="nav-link" href="staff.html">⚕ <span>Medical Staff</span></a
+        ><a class="nav-link" href="appointments.html"
+          >▣ <span>Appointments</span></a
+        ><a class="nav-link" href="consultations.html"
+          >✚ <span>Consultations</span></a
+        ><a class="nav-link" href="medicines.html">▤ <span>Medicines</span></a
+        ><a class="nav-link" href="reports.html">▥ <span>Reports</span></a>
+        <div class="sidebar-tip">
+          <b>Student records</b>
+          <p>Use fictional data while developing your project.</p>
+        </div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">RECORD MANAGEMENT</span>
+            <h1>Students</h1>
+          </div>
+          <div class="user-chip">
+            <span class="avatar">A</span
+            ><span><b>Administrator</b><small>Medical office</small></span>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Student records</h2>
+              <p>Add, search, edit or delete student records.</p>
+            </div>
+            <button class="button primary" id="showStudentForm">
+              ＋ Add student
+            </button>
+          </div>
+          <form id="studentForm" class="form-grid hidden">
+            <input type="hidden" name="student_id" /><label
+              >Roll number *<input
+                name="roll_no"
+                required
+                maxlength="30" /></label
+            ><label>Student name *<input name="student_name" required /></label
+            ><label>Department *<input name="department" required /></label
+            ><label
+              >Year of study *<select name="year_of_study" required>
+                <option value="">Select year</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select></label
+            ><label
+              >Phone<input name="phone" pattern="[0-9+() -]{7,20}" /></label
+            ><label>Email<input name="email" type="email" /></label>
+            <div class="form-buttons">
+              <button class="button primary" type="submit">Save student</button
+              ><button
+                class="button secondary"
+                type="button"
+                id="cancelStudentForm"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+          <div class="toolbar">
+            <input
+              id="studentSearch"
+              placeholder="Search by name, roll number or department"
+            /><button class="button secondary" id="searchStudents">
+              Search
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Roll number</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Year</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTable">
+                <tr>
+                  <td colspan="6" class="empty-cell">Loading students…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/students.js"></script>
+  </body>
+</html>

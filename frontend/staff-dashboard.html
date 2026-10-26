@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Staff Dashboard | College Medical System</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #18233b;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 25px auto;
+      padding: 18px;
+    }
+
+    .topbar, .panel, .card, .navigation {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 3px 14px #0000000d;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+
+    .navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .nav-link, button {
+      display: inline-block;
+      padding: 11px 15px;
+      border: 0;
+      border-radius: 7px;
+      background: #2457d6;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:disabled { opacity: .6; cursor: not-allowed; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .card h3 { color: #526078; font-size: 15px; }
+
+    .number {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 8px 0 0;
+      color: #2457d6;
+    }
+
+    .panel {
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      min-width: 550px;
+    }
+
+    th, td {
+      padding: 11px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    th { background: #f8fafc; }
+
+    .message {
+      padding: 13px;
+      margin: 18px 0;
+      border-radius: 8px;
+      background: #eef4ff;
+      overflow-wrap: anywhere;
+    }
+
+    .error { background: #fff0f0; color: #a11b1b; }
+    .muted { color: #526078; }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 10px; }
+      .topbar, .panel, .card, .navigation { padding: 14px; }
+      .nav-link { flex: 1 1 130px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+<main class="wrap">
+
+  <header class="topbar">
+    <div>
+      <h1>Medical Staff Dashboard</h1>
+      <p>College Medical Management System</p>
+      <p id="staffIdentity">Checking login...</p>
+    </div>
+    <button id="logoutBtn" type="button">Logout</button>
+  </header>
+
+  <nav class="navigation" aria-label="Staff navigation">
+    <a class="nav-link" href="/appointments.html">Appointments</a>
+    <a class="nav-link" href="/consultations.html">Consultations & Prescriptions</a>
+    <a class="nav-link" href="/medicines.html">Medicine Inventory & Dispensing</a>
+    <a class="nav-link" href="/reports.html">Reports</a>
+    <a class="nav-link" href="/students.html">Students</a>
+    <a class="nav-link" href="/staff.html">Staff Management</a>
+  </nav>
+
+  <div id="message" class="message" role="status">
+    Loading dashboard...
+  </div>
+
+  <section class="cards">
+    <article class="card">
+      <h3>Total Students</h3>
+      <p id="studentCount" class="number">—</p>
+    </article>
+
+    <article class="card">
+      <h3>Total Appointments</h3>
+      <p id="appointmentCount" class="number">—</p>
+    </article>
+
+    <article class="card">
+      <h3>Medicine Types</h3>
+      <p id="medicineCount" class="number">—</p>
+    </article>
+
+    <article class="card">
+      <h3>Consultations Recorded</h3>
+      <p id="consultationCount" class="number">—</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Recent Appointments</h2>
+    <p class="muted">Appointments booked by students.</p>
+    <div id="appointments">Loading appointments...</div>
+  </section>
+
+  <section class="panel">
+    <h2>Medicine Inventory Overview</h2>
+    <p class="muted">Medicines with the lowest stock appear first.</p>
+    <div id="medicines">Loading inventory...</div>
+  </section>
+
+  <section class="panel">
+    <h2>Quick Actions</h2>
+    <p><a class="nav-link" href="/appointments.html">Review Appointments</a></p>
+    <p><a class="nav-link" href="/consultations.html">Record Consultation</a></p>
+    <p><a class="nav-link" href="/medicines.html">Dispense Medicine</a></p>
+    <p><a class="nav-link" href="/reports.html">View Reports</a></p>
+  </section>
+
+</main>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  async function api(url, options = {}) {
+    const response = await fetch(url, {
+      credentials: "same-origin",
+      ...options
+    });
+
+    if (response.status === 401) {
+      window.location.replace("/staff-login.html");
+      throw new Error("Your session expired. Please log in again.");
+    }
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || `Request failed (${response.status}).`
+      );
+    }
+
+    return data;
+  }
+
+  function showMessage(message, isError = false) {
+    $("message").textContent = message;
+    $("message").classList.toggle("error", isError);
+  }
+
+  function renderTable(containerId, columns, rows) {
+    const container = $(containerId);
+    container.replaceChildren();
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      container.textContent = "No records found.";
+      return;
+    }
+
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+
+    columns.forEach(([label]) => {
+      const th = document.createElement("th");
+      th.textContent = label;
+      headRow.appendChild(th);
+    });
+
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+
+      columns.forEach(([, key]) => {
+        const td = document.createElement("td");
+        td.textContent = row[key] == null ? "—" : String(row[key]);
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
+
+  async function loadDashboard() {
+    try {
+      const auth = await api("/api/auth/me");
+      const user = auth.user || auth;
+
+      if (!["doctor", "nurse"].includes(user.role)) {
+        window.location.replace("/login.html");
+        return;
+      }
+
+      $("staffIdentity").textContent =
+        `Signed in as ${user.username || user.email || "Medical Staff"} (${user.role})`;
+
+      const [students, appointments, medicines, consultations] =
+        await Promise.all([
+          api("/api/students"),
+          api("/api/appointments"),
+          api("/api/medicines"),
+          api("/api/consultations")
+        ]);
+
+      const studentRows = Array.isArray(students)
+        ? students
+        : students.students || [];
+
+      const appointmentRows = Array.isArray(appointments)
+        ? appointments
+        : appointments.appointments || [];
+
+      const medicineRows = Array.isArray(medicines)
+        ? medicines
+        : medicines.medicines || [];
+
+      const consultationRows = Array.isArray(consultations)
+        ? consultations
+        : consultations.consultations || [];
+
+      $("studentCount").textContent = studentRows.length;
+      $("appointmentCount").textContent = appointmentRows.length;
+      $("medicineCount").textContent = medicineRows.length;
+      $("consultationCount").textContent = consultationRows.length;
+
+      const recentAppointments = [...appointmentRows]
+        .sort((a, b) => {
+          const dateA = new Date(
+            `${a.appointment_date || ""} ${a.appointment_time || ""}`
+          );
+          const dateB = new Date(
+            `${b.appointment_date || ""} ${b.appointment_time || ""}`
+          );
+          return dateB - dateA;
+        })
+        .slice(0, 10);
+
+      renderTable("appointments", [
+        ["Appointment ID", "appointment_id"],
+        ["Student", "student_name"],
+        ["Staff", "staff_name"],
+        ["Date", "appointment_date"],
+        ["Time", "appointment_time"],
+        ["Reason", "reason"],
+        ["Status", "status"]
+      ], recentAppointments);
+
+      const lowStockFirst = [...medicineRows].sort(
+        (a, b) => Number(a.stock_quantity) - Number(b.stock_quantity)
+      ).slice(0, 10);
+
+      renderTable("medicines", [
+        ["Medicine", "medicine_name"],
+        ["Category", "category"],
+        ["Stock", "stock_quantity"],
+        ["Price", "price"],
+        ["Expiry Date", "expiry_date"]
+      ], lowStockFirst);
+
+      showMessage("Dashboard loaded successfully.");
+    } catch (error) {
+      showMessage(error.message, true);
+      $("appointments").textContent = "Could not load appointments.";
+      $("medicines").textContent = "Could not load inventory.";
+    }
+  }
+
+  $("logoutBtn").addEventListener("click", async () => {
+    $("logoutBtn").disabled = true;
+
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "same-origin"
+      });
+    } finally {
+      window.location.replace("/staff-login.html");
+    }
+  });
+
+  loadDashboard();
+</script>
+</body>
+</html>

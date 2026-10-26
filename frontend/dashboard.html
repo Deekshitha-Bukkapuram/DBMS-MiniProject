@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | CampusCare</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Dashboard header actions */
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logout-btn {
+      background-color: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    .logout-btn:focus-visible {
+      outline: 3px solid #fca5a5;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 600px) {
+      .topbar-actions {
+        gap: 10px;
+      }
+
+      .logout-btn {
+        padding: 9px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a class="brand" href="dashboard.html">
+        <span class="brand-mark">✚</span>
+        <span>
+          <b>CampusCare</b>
+          <small>College Medical Centre</small>
+        </span>
+      </a>
+
+      <p class="nav-heading">MAIN MENU</p>
+
+      <a class="nav-link active" href="dashboard.html">
+        ▦ <span>Dashboard</span>
+      </a>
+
+      <a class="nav-link" href="students.html">
+        ♙ <span>Students</span>
+      </a>
+
+      <a class="nav-link" href="staff.html">
+        ⚕ <span>Medical Staff</span>
+      </a>
+
+      <a class="nav-link" href="appointments.html">
+        ▣ <span>Appointments</span>
+      </a>
+
+      <a class="nav-link" href="consultations.html">
+        ✚ <span>Consultations</span>
+      </a>
+
+      <a class="nav-link" href="medicines.html">
+        ▤ <span>Medicines</span>
+      </a>
+
+      <a class="nav-link" href="prescriptions.html">
+        ▤ <span>Prescriptions</span>
+      </a>
+
+      <a class="nav-link" href="reports.html">
+        ▥ <span>Reports</span>
+      </a>
+
+      <div class="sidebar-tip">
+        <b>Campus health matters.</b>
+        <p>Keep student care organized and accessible.</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Header -->
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">COLLEGE HEALTH CENTRE</span>
+          <h1>Dashboard</h1>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="user-chip">
+            <span class="avatar">A</span>
+            <span>
+              <b>Medical Staff</b>
+              <small>CampusCare</small>
+            </span>
+          </div>
+
+          <button
+            type="button"
+            id="logoutBtn"
+            class="logout-btn"
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Notifications -->
+      <div id="notice" class="notice hidden"></div>
+
+      <!-- Welcome Section -->
+      <section class="welcome">
+        <div>
+          <span class="eyebrow light">CAMPUSCARE OVERVIEW</span>
+          <h2>Good care starts with good records.</h2>
+          <p>
+            Manage students, appointments and medical supplies
+            in one place.
+          </p>
+        </div>
+
+        <span class="welcome-icon">✚</span>
+      </section>
+
+      <!-- Dashboard Statistics -->
+      <section class="stat-grid">
+
+        <article class="stat-card">
+          <span class="stat-symbol blue">♙</span>
+          <p>Total Students</p>
+          <strong id="totalStudents">—</strong>
+          <small>Registered students</small>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-symbol green">⚕</span>
+          <p>Medical Staff</p>
+          <strong id="totalStaff">—</strong>
+          <small>Clinic team</small>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-symbol purple">▣</span>
+          <p>Appointments</p>
+          <strong id="totalAppointments">—</strong>
+          <small>All recorded appointments</small>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-symbol orange">▤</span>
+          <p>Medicine types</p>
+          <strong id="totalMedicines">—</strong>
+          <small id="lowStock">Low stock: —</small>
+        </article>
+
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="panel">
+        <div class="panel-title">
+          <div>
+            <h2>Quick actions</h2>
+            <p>Go directly to a common task.</p>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <a class="button primary" href="students.html">
+            ＋ Add student
+          </a>
+
+          <a class="button secondary" href="appointments.html">
+            ＋ Book appointment
+          </a>
+
+          <a class="button secondary" href="medicines.html">
+            ＋ Manage medicines
+          </a>
+
+          <a class="button secondary" href="prescriptions.html">
+            ＋ Prescriptions
+          </a>
+
+          <a class="button secondary" href="reports.html">
+            View reports →
+          </a>
+        </div>
+      </section>
+
+      <p class="page-footnote">
+        Educational mini-project using fictional sample records.
+        Not for real patient care.
+      </p>
+
+    </main>
+  </div>
+
+  <!-- Existing dashboard JavaScript -->
+  <script src="js/main.js"></script>
+
+  <!-- Staff logout -->
+  <script>
+    const staffLogoutButton = document.getElementById("logoutBtn");
+
+    if (staffLogoutButton) {
+      staffLogoutButton.addEventListener("click", async () => {
+        const confirmed = window.confirm(
+          "Are you sure you want to log out?"
+        );
+
+        if (!confirmed) {
+          return;
+        }
+
+        staffLogoutButton.disabled = true;
+        staffLogoutButton.textContent = "Logging out...";
+
+        try {
+          const response = await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin"
+          });
+
+          if (response.ok) {
+            window.location.replace("/login.html");
+            return;
+          }
+
+          staffLogoutButton.disabled = false;
+          staffLogoutButton.textContent = "Logout";
+
+          alert("Logout failed. Please try again.");
+        } catch (error) {
+          console.error("Logout error:", error);
+
+          staffLogoutButton.disabled = false;
+          staffLogoutButton.textContent = "Logout";
+
+          alert(
+            "Unable to connect to the server. Please try again."
+          );
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

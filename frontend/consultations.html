@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultations | CampusCare</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-mark">✚</span
+          ><span
+            ><b>CampusCare</b><small>College Medical Centre</small></span
+          ></a
+        >
+        <p class="nav-heading">MAIN MENU</p>
+        <a class="nav-link" href="dashboard.html">▦ <span>Dashboard</span></a
+        ><a class="nav-link" href="students.html">♙ <span>Students</span></a
+        ><a class="nav-link" href="staff.html">⚕ <span>Medical Staff</span></a
+        ><a class="nav-link" href="appointments.html"
+          >▣ <span>Appointments</span></a
+        ><a class="nav-link active" href="consultations.html"
+          >✚ <span>Consultations</span></a
+        >
+        <a class="nav-link" href="prescriptions.html">
+  💊 <span>Prescriptions</span>
+</a>
+<a class="nav-link" href="medicines.html">▤ <span>Medicines</span></a
+        ><a class="nav-link" href="reports.html">▥ <span>Reports</span></a>
+        <div class="sidebar-tip">
+          <b>Consultation notes</b>
+          <p>Use fictional examples for the DBMS demonstration.</p>
+        </div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">VISIT RECORDS</span>
+            <h1>Consultations</h1>
+          </div>
+          <div class="user-chip">
+            <span class="avatar">A</span
+            ><span><b>Administrator</b><small>Medical office</small></span>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Record a consultation</h2>
+              <p>Select an appointment and enter the consultation details.</p>
+            </div>
+          </div>
+          <form id="consultationForm" class="form-grid">
+            <label
+              >Appointment *<select
+                name="appointment_id"
+                id="consultationAppointment"
+                required
+              >
+                <option value="">Loading appointments…</option>
+              </select></label
+            ><label
+              >Diagnosis *<input
+                name="diagnosis"
+                required
+                maxlength="255" /></label
+            ><label class="full-width"
+              >Treatment / notes *<textarea
+                name="treatment"
+                required
+                rows="3"
+              ></textarea>
+            </label>
+            <div class="form-buttons">
+              <button class="button primary" type="submit">
+                Save consultation
+              </button>
+            </div>
+          </form>
+        </section>
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h2>Consultation history</h2>
+              <p>Previously recorded consultation details.</p>
+            </div>
+            <button class="button secondary" id="refreshConsultations">
+              Refresh
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Staff</th>
+                  <th>Appointment date</th>
+                  <th>Diagnosis</th>
+                  <th>Treatment</th>
+                </tr>
+              </thead>
+              <tbody id="consultationsTable">
+                <tr>
+                  <td colspan="5" class="empty-cell">Loading consultations…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/consultations.js"></script>
+  </body>
+</html>

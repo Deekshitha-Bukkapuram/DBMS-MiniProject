@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | College Medical System</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: #f3f6fb;
+      color: #18233b;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard {
+      max-width: 1150px;
+      margin: 25px auto;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+    }
+
+    .topbar h1 { margin-top: 0; }
+    .topbar p { overflow-wrap: anywhere; }
+
+    .navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+      padding: 14px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px #0000000a;
+    }
+
+    .nav-link {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: #eef4ff;
+      color: #2457d6;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .nav-link:hover {
+      background: #2457d6;
+      color: white;
+    }
+
+    .panel {
+      background: white;
+      padding: 24px;
+      margin: 20px 0;
+      border-radius: 14px;
+      box-shadow: 0 3px 14px #00000012;
+      overflow-x: auto;
+      scroll-margin-top: 20px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .field {
+      background: #f3f6fb;
+      padding: 16px;
+      border-radius: 9px;
+      overflow-wrap: anywhere;
+    }
+
+    .field strong,
+    .field label strong {
+      display: block;
+      margin-bottom: 9px;
+      color: #526078;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      min-width: 500px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f8fafc; }
+
+    .message {
+      padding: 14px;
+      border-radius: 8px;
+      background: #eef4ff;
+      margin-top: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .error {
+      color: #b42318;
+      background: #fff0f0;
+    }
+
+    .primary-btn, .logout-btn {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #2457d6;
+      color: white;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .primary-btn:disabled,
+    .logout-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .muted { color: #526078; }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font: inherit;
+      background: white;
+      color: #18233b;
+    }
+
+    .form-field { margin-bottom: 15px; }
+
+    @media (max-width: 600px) {
+      .dashboard { padding: 12px; }
+      .panel, .topbar { padding: 16px; }
+      .navigation { padding: 10px; }
+
+      .nav-link {
+        flex: 1 1 140px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="dashboard">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div>
+        <h1>Student Dashboard</h1>
+        <p>College Medical Management System</p>
+        <p id="studentIdentity">Checking login...</p>
+      </div>
+
+      <button id="logoutBtn" class="logout-btn" type="button">
+        Logout
+      </button>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navigation" aria-label="Student dashboard navigation">
+      <a class="nav-link" href="/home.html">Home</a>
+      <a class="nav-link" href="#profileSection">My Profile</a>
+      <a class="nav-link" href="#bookAppointment">Book Appointment</a>
+      <a class="nav-link" href="#appointmentsSection">My Appointments</a>
+      <a class="nav-link" href="#consultationsSection">Medical Records</a>
+      <a class="nav-link" href="#medicinesSection">Medicines</a>
+    </nav>
+
+    <div id="message" class="message" role="status">
+      Loading your details...
+    </div>
+
+    <!-- Student profile -->
+    <section class="panel" id="profileSection">
+      <h2>My Profile</h2>
+      <div id="profile" class="profile-grid">Loading profile...</div>
+    </section>
+
+    <!-- Book appointment -->
+    <section class="panel" id="bookAppointment">
+      <h2>Book an Appointment</h2>
+
+      <p class="muted">
+        Choose a doctor or nurse, date, time, and reason for your visit.
+      </p>
+
+      <form id="bookingForm">
+        <div class="field form-field">
+          <label for="staff_id">
+            <strong>Select Doctor or Nurse</strong>
+          </label>
+
+          <select id="staff_id" name="staff_id"
+                  class="form-control" required>
+            <option value="">Loading medical staff...</option>
+          </select>
+        </div>
+
+        <div class="profile-grid form-field">
+          <div class="field">
+            <label for="appointment_date">
+              <strong>Appointment Date</strong>
+            </label>
+
+            <input class="form-control" type="date"
+                   id="appointment_date"
+                   name="appointment_date" required>
+          </div>
+
+          <div class="field">
+            <label for="appointment_time">
+              <strong>Appointment Time</strong>
+            </label>
+
+            <input class="form-control" type="time"
+                   id="appointment_time"
+                   name="appointment_time" required>
+          </div>
+        </div>
+
+        <div class="field form-field">
+          <label for="reason">
+            <strong>Reason for Visit</strong>
+          </label>
+
+          <textarea class="form-control" id="reason"
+                    name="reason" rows="3" maxlength="255"
+                    required
+                    placeholder="Briefly explain why you need a consultation"></textarea>
+        </div>
+
+        <button type="submit" id="bookingBtn" class="primary-btn">
+          Book Appointment
+        </button>
+
+        <p id="bookingMessage" class="message"
+           role="status" hidden></p>
+      </form>
+    </section>
+
+    <!-- Student appointments -->
+    <section class="panel" id="appointmentsSection">
+      <h2>My Appointments</h2>
+
+      <p class="muted">
+        View your scheduled, completed, and cancelled appointments here.
+      </p>
+
+      <div id="appointments">Loading appointments...</div>
+    </section>
+
+    <!-- Consultation history -->
+    <section class="panel" id="consultationsSection">
+      <h2>My Medical Records</h2>
+
+      <p class="muted">
+        Your consultation history, diagnosis, treatment, and consultation
+        dates appear here when available.
+      </p>
+
+      <div id="consultations">Loading medical records...</div>
+    </section>
+
+    <!-- Medicines and prescriptions -->
+    <section class="panel" id="medicinesSection">
+      <h2>Medicines &amp; Prescriptions</h2>
+
+      <p class="muted">
+        View medicines prescribed during your consultations, including
+        dosage, frequency, duration, instructions, and dispensing status.
+      </p>
+
+      <div id="prescriptionsMessage" class="message" role="status">
+        Loading your prescriptions...
+      </div>
+
+      <div id="prescriptionsTable"></div>
+    </section>
+
+  </main>
+
+  <script>
+    // Fetch data from the backend.
+    async function getData(url) {
+      const response = await fetch(url, {
+        credentials: "same-origin"
+      });
+
+      if (response.status === 401) {
+        window.location.replace("/student-login.html");
+        throw new Error("Your session has expired. Please log in again.");
+      }
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || data.error ||
+          `Request failed (${response.status}).`
+        );
+      }
+
+      return data;
+    }
+
+    // Build a table safely using textContent.
+    function showTable(containerId, columns, rows) {
+      const container = document.getElementById(containerId);
+
+      if (!Array.isArray(rows) || rows.length === 0) {
+        container.textContent = "No records found.";
+        return;
+      }
+
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const header = document.createElement("tr");
+
+      columns.forEach(([label]) => {
+        const th = document.createElement("th");
+        th.textContent = label;
+        header.appendChild(th);
+      });
+
+      thead.appendChild(header);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+
+        columns.forEach(([, key]) => {
+          const td = document.createElement("td");
+          td.textContent =
+            row[key] == null || row[key] === ""
+              ? "—"
+              : String(row[key]);
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+      container.replaceChildren(table);
+    }
+
+    // Support endpoints that return either arrays or named arrays.
+    function getRows(data, key) {
+      if (Array.isArray(data)) return data;
+
+      return data && Array.isArray(data[key])
+        ? data[key]
+        : [];
+    }
+
+    // Load the student's own prescription history.
+    async function loadStudentPrescriptions() {
+      const message = document.getElementById("prescriptionsMessage");
+      const container = document.getElementById("prescriptionsTable");
+
+      message.textContent = "Loading your prescriptions...";
+      message.classList.remove("error");
+      container.replaceChildren();
+
+      try {
+        const data = await getData("/api/student/medical-history");
+
+        // The endpoint may return a flat array or an object.
+        let rows = Array.isArray(data)
+          ? data
+          : getRows(data, "prescriptions");
+
+        if (!Array.isArray(data) && rows.length === 0) {
+          rows = getRows(data, "medicalHistory");
+        }
+
+        // Only display actual prescription rows.
+        const prescriptions = rows.filter(
+          row => row.prescription_item_id != null
+        );
+
+        if (prescriptions.length === 0) {
+          message.textContent =
+            "No prescribed medicines are available in your medical history yet.";
+          return;
+        }
+
+        showTable("prescriptionsTable", [
+          ["Consultation ID", "consultation_id"],
+          ["Medicine", "medicine_name"],
+          ["Quantity Prescribed", "quantity"],
+          ["Dosage", "dosage"],
+          ["Frequency", "frequency"],
+          ["Duration", "duration"],
+          ["Instructions", "instructions"],
+          ["Quantity Dispensed", "quantity_dispensed"]
+        ], prescriptions);
+
+        message.textContent =
+          `Your prescription history: ${prescriptions.length} record(s).`;
+
+      } catch (error) {
+        console.error("Prescription history error:", error);
+
+        message.textContent =
+          "Could not load prescriptions: " + error.message;
+
+        message.classList.add("error");
+      }
+    }
+
+    // Prevent selecting a date in the past.
+    function setMinimumAppointmentDate() {
+      const input = document.getElementById("appointment_date");
+      const now = new Date();
+
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+
+      input.min = `${year}-${month}-${day}`;
+    }
+
+    // Load available medical staff into the booking form.
+    async function loadMedicalStaff() {
+      const select = document.getElementById("staff_id");
+      const staff = await getData("/api/student/medical-staff");
+
+      select.replaceChildren();
+
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = staff.length
+        ? "Select a doctor or nurse"
+        : "No medical staff available";
+
+      select.appendChild(placeholder);
+
+      staff.forEach(member => {
+        const option = document.createElement("option");
+        option.value = member.staff_id;
+
+        const specialization = member.specialization
+          ? ` - ${member.specialization}`
+          : "";
+
+        option.textContent =
+          `${member.staff_name} (${member.designation})${specialization}`;
+
+        select.appendChild(option);
+      });
+    }
+
+    // Refresh the student's appointments.
+    async function refreshAppointments() {
+      const data = await getData("/api/student/appointments");
+
+      showTable("appointments", [
+        ["Appointment ID", "appointment_id"],
+        ["Medical Staff", "staff_name"],
+        ["Date", "appointment_date"],
+        ["Time", "appointment_time"],
+        ["Reason", "reason"],
+        ["Status", "status"]
+      ], getRows(data, "appointments"));
+    }
+
+    // Submit a new appointment.
+    document.getElementById("bookingForm").addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const button = document.getElementById("bookingBtn");
+        const bookingMessage = document.getElementById("bookingMessage");
+
+        if (!form.reportValidity()) return;
+
+        button.disabled = true;
+        button.textContent = "Booking...";
+        bookingMessage.hidden = false;
+        bookingMessage.classList.remove("error");
+
+        try {
+          const payload = {
+            staff_id: document.getElementById("staff_id").value,
+            appointment_date:
+              document.getElementById("appointment_date").value,
+            appointment_time:
+              document.getElementById("appointment_time").value,
+            reason: document.getElementById("reason").value.trim()
+          };
+
+          const response = await fetch("/api/student/appointments", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json().catch(() => ({}));
+
+          if (response.status === 401) {
+            window.location.replace("/student-login.html");
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error(
+              data.message || "Unable to book appointment."
+            );
+          }
+
+          bookingMessage.textContent =
+            `${data.message || "Appointment booked successfully."}` +
+            (data.appointment_id
+              ? ` Appointment ID: ${data.appointment_id}.`
+              : "");
+
+          form.reset();
+          setMinimumAppointmentDate();
+
+          await refreshAppointments();
+
+          document.getElementById("appointmentsSection").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+        } catch (error) {
+          bookingMessage.textContent = error.message;
+          bookingMessage.classList.add("error");
+
+        } finally {
+          button.disabled = false;
+          button.textContent = "Book Appointment";
+        }
+      }
+    );
+
+    // Load all dashboard sections.
+    async function loadDashboard() {
+      const message = document.getElementById("message");
+
+      try {
+        const authResponse = await getData("/api/auth/me");
+        const me = authResponse.user || authResponse;
+
+        if (me.role !== "student") {
+          window.location.replace("/login.html");
+          return;
+        }
+
+        document.getElementById("studentIdentity").textContent =
+          "Signed in as " + (me.email || "Student");
+
+        const [profileData, appointmentData, consultationData] =
+          await Promise.all([
+            getData("/api/student/profile"),
+            getData("/api/student/appointments"),
+            getData("/api/student/consultations")
+          ]);
+
+        const profile = profileData.student || profileData;
+
+        // Render profile.
+        const fields = [
+          ["Name", "student_name"],
+          ["Roll Number", "roll_no"],
+          ["Department", "department"],
+          ["Year of Study", "year_of_study"],
+          ["Email", "email"],
+          ["Phone", "phone"]
+        ];
+
+        const profileContainer = document.getElementById("profile");
+        profileContainer.replaceChildren();
+
+        fields.forEach(([label, key]) => {
+          const field = document.createElement("div");
+          field.className = "field";
+
+          const title = document.createElement("strong");
+          title.textContent = label;
+
+          const value = document.createElement("span");
+          value.textContent =
+            profile[key] == null ? "—" : String(profile[key]);
+
+          field.append(title, value);
+          profileContainer.appendChild(field);
+        });
+
+        // Render appointments.
+        showTable("appointments", [
+          ["Appointment ID", "appointment_id"],
+          ["Medical Staff", "staff_name"],
+          ["Date", "appointment_date"],
+          ["Time", "appointment_time"],
+          ["Reason", "reason"],
+          ["Status", "status"]
+        ], getRows(appointmentData, "appointments"));
+
+        // Render consultations.
+        showTable("consultations", [
+          ["Consultation ID", "consultation_id"],
+          ["Appointment ID", "appointment_id"],
+          ["Diagnosis", "diagnosis"],
+          ["Treatment", "treatment"],
+          ["Date", "consultation_date"]
+        ], getRows(consultationData, "consultations"));
+
+        // Load prescriptions independently.
+        loadStudentPrescriptions();
+
+        setMinimumAppointmentDate();
+
+        try {
+          await loadMedicalStaff();
+
+        } catch (error) {
+          const select = document.getElementById("staff_id");
+          select.replaceChildren();
+
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = "Unable to load medical staff";
+
+          select.appendChild(option);
+
+          console.error(
+            "Could not load medical staff:",
+            error.message
+          );
+        }
+
+        message.textContent =
+          "Welcome! Your personal medical dashboard is ready.";
+
+        message.classList.remove("error");
+
+      } catch (error) {
+        message.textContent = error.message;
+        message.classList.add("error");
+      }
+    }
+
+    // Student logout.
+    document.getElementById("logoutBtn").addEventListener(
+      "click",
+      async () => {
+        const button = document.getElementById("logoutBtn");
+        button.disabled = true;
+
+        try {
+          await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin"
+          });
+        } finally {
+          window.location.replace("/student-login.html");
+        }
+      }
+    );
+
+    // Start dashboard.
+    loadDashboard();
+  </script>
+</body>
+</html>
