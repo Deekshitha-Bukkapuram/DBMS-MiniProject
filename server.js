@@ -5,13 +5,13 @@ const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 require("dotenv").config();
 
-const db = require("./db");
-const medicalRoutes = require("./medical-routes");
+const db = require("./backend/db");
+const medicalRoutes = require("./backend/medical-routes");
 
 const app = express();
 
 const PORT = Number(process.env.PORT || 3000);
-const frontendPath = path.join(__dirname, "..", "frontend");
+const frontendPath = path.join(__dirname, "frontend");
 
 if (!process.env.SESSION_SECRET) {
   throw new Error("SESSION_SECRET is missing from backend/.env");
